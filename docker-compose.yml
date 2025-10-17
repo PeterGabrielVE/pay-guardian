@@ -1,0 +1,75 @@
+
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: wallet
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  mongo:
+    image: mongo:6
+    volumes:
+      - ./mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+  wallet-core:
+    build:
+        context: .
+        dockerfile: ./docker/core/Dockerfile
+    container_name: wallet_core
+    depends_on:
+      - mysql
+      - mongo
+      - mailhog
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_DATABASE: wallet
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      MONGO_HOST: mongo
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      INTERNAL_KEY: supersecretkey
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./wallet-core:/var/www/html
+
+  wallet-api:
+    build:
+        context: .
+        dockerfile: ./docker/api/Dockerfile
+    container_name: wallet_api
+    depends_on:
+      - wallet-core
+    environment:
+      DB_SERVICE_URL: http://wallet-core:8000/api
+      INTERNAL_KEY: supersecretkey
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./wallet-api:/var/www/html
+
+  frontend:
+    build:
+        context: .
+        dockerfile: ./docker/frontend/Dockerfile
+    container_name: wallet_frontend
+    depends_on:
+      - wallet-api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
