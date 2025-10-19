@@ -69,7 +69,12 @@ services:
     container_name: wallet_frontend
     depends_on:
       - wallet-api
-    ports:
-      - "3000:3000"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - npm_config_optional=true
+    command: npm run dev -- --host 0.0.0.0
