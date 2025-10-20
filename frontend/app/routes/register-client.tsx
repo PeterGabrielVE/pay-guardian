@@ -64,6 +64,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               value={String(form[name as keyof ClientData] ?? "")}
               onChange={handleChange}
               error={errors[name as keyof ValidationErrors]?.[0]}
+              required
             />
           ))}
 

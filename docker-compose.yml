@@ -55,12 +55,14 @@ services:
     depends_on:
       - wallet-core
     environment:
+      CORE_URL: http://wallet-core:8000
       DB_SERVICE_URL: http://wallet-core:8000/api
       INTERNAL_KEY: supersecretkey
     ports:
       - "8001:8000"
     volumes:
-      - ./wallet-api:/var/www/html
+    - ./wallet-api:/var/www/html
+    - /var/www/html/vendor 
 
   frontend:
     build:

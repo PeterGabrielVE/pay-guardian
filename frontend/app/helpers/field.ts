@@ -10,3 +10,9 @@ export const clientFields: Field[] = [
   { label: "Correo electrónico", name: "email", type: "email" },
   { label: "Teléfono", name: "phone" },
 ];
+
+export const rechargeFields: Field[] = [
+  { label: "Documento", name: "documento" },
+  { label: "Celular", name: "celular" },
+  { label: "Valor a recargar", name: "valor", type: "number" },
+];

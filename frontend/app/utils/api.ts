@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import type { FormState, ResponseData } from "../routes/types/recharge";
 
 export interface ClientData {
   id?: number;
@@ -18,6 +19,9 @@ export interface ApiResponse<T = any> {
   data?: T;
   errors?: ValidationErrors;
 }
+
+
+const BASE_URL_API = "http://localhost:8001/api";
 
 const api = axios.create({
   baseURL: 'http://localhost:8000/api',
@@ -56,6 +60,23 @@ export const listClients = async (): Promise<ApiResponse<ClientData[]>> => {
     console.error('Error fetching clients:', error.message);
     throw err;
   }
+};
+
+
+export const rechargeWallet = async (form: FormState): Promise<ResponseData> => {
+  const response = await fetch(`${BASE_URL_API}/wallet/recharge`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      document: form.documento,
+      phone: form.celular,
+      amount: Number(form.valor),
+    }),
+  });
+
+  return response.json();
 };
 
 export default api;

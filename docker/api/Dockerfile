@@ -12,8 +12,14 @@ RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath \
 # Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Directorio de trabajo
+# Establecer directorio de trabajo
 WORKDIR /var/www/html
+
+# 📌 Copiar archivos de la app (incluyendo composer.json y composer.lock)
+COPY ./wallet-api /var/www/html
+
+# Instalar dependencias de Laravel
+RUN composer install --no-dev --optimize-autoloader
 
 # Copiar entrypoint
 COPY ./docker/api/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -23,9 +29,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN mkdir -p storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
-# Exponer puerto
 EXPOSE 8000
 
-# ENTRYPOINT y CMD
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
