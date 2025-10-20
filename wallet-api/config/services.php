@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'wallet_core' => [
+        'db_service_url' => env('DB_SERVICE_URL'),
+    ],
+
 ];

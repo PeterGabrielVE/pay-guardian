@@ -79,4 +79,36 @@ export const rechargeWallet = async (form: FormState): Promise<ResponseData> => 
   return response.json();
 };
 
+export interface PayRequest {
+  document: string;
+  phone: string;
+  amount: number;
+}
+
+export interface ConfirmRequest {
+  session_id: string;
+  token: string;
+}
+
+export const pay = async (data: PayRequest) => {
+  const res = await fetch("http://localhost:8001/api/wallet/pay", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Error en pago");
+  return res.json();
+};
+
+export const confirmPay = async (data: ConfirmRequest) => {
+  const res = await fetch("http://localhost:8001/api/wallet/confirm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Error al confirmar pago");
+  return res.json();
+};
+
+
 export default api;

@@ -16,3 +16,9 @@ export const rechargeFields: Field[] = [
   { label: "Celular", name: "celular" },
   { label: "Valor a recargar", name: "valor", type: "number" },
 ];
+
+export const payFields = [
+  { label: "Documento", name: "document", type: "text" },
+  { label: "Celular", name: "phone", type: "text" },
+  { label: "Monto", name: "amount", type: "number" },
+];
