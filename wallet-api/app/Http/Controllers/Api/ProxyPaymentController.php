@@ -39,4 +39,14 @@ class ProxyPaymentController extends Controller
         ]);
         return response()->json(json_decode($res->getBody(), true), $res->getStatusCode());
     }
+
+    public function checkBalance(Request $req)
+    {
+        $res = $this->client->post("/api/internal/wallets/balance", [
+            'json' => $req->all()
+        ]);
+
+        $data = json_decode($res->getBody(), true);
+        return response()->json($data, $data['code']);
+    }
 }

@@ -22,9 +22,9 @@ export default function PayWallet() {
 
         try {
             const res = await pay({ document: form.document, phone: form.phone, amount: Number(form.amount) });
-            setSessionId(res.data.session_id || "");
+            setSessionId(res.data?.session_id || "");
             setStep("confirm");
-            setResponse({ code: 0, message: "Token enviado a su correo (Mailhog para pruebas)", session_id: res.data.session_id });
+            setResponse({ code: 0, message: "Token enviado a su correo (Mailhog para pruebas)", session_id: res.data?.session_id });
         } catch (err: any) {
             setResponse({ code: 99, message: err.message || "Error de red" });
         } finally {

@@ -5,4 +5,5 @@ export default [
     route("register-client", "routes/register-client.tsx"),
     route("recharge", "routes/recharge.tsx"),
     route("payment", "routes/payment.tsx"),
+    route("balance", "routes/checkBalance.tsx"),
 ] satisfies RouteConfig;

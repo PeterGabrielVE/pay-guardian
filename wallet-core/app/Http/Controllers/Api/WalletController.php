@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\WalletService;
 use App\Http\Requests\RechargeWalletRequest;
+use App\Http\Requests\CheckBalanceRequest;
 use Exception;
 
 class WalletController extends Controller
@@ -23,5 +24,11 @@ class WalletController extends Controller
         $result = $this->walletService->recharge($request->validated());
 
         return response()->json($result, $result['code'] === 0 ? 200 : 400);
+    }
+
+    public function balance(CheckBalanceRequest $req)
+    {
+        $result = $this->walletService->checkBalance($req->document, $req->phone);
+        return response()->json($result, $result['code']);
     }
 }

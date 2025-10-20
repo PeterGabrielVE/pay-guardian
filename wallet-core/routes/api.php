@@ -10,3 +10,4 @@ Route::get('/clients', [ClientController::class, 'listClients']);
 Route::post('/internal/wallets/recharge', [WalletController::class, 'recharge']);
 Route::post('/internal/wallets/pay', [PaymentController::class, 'processPayment']);
 Route::post('/internal/wallets/confirm', [PaymentController::class, 'confirmPayment']);
+Route::post('/internal/wallets/balance', [WalletController::class, 'balance']);

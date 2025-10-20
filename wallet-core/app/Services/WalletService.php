@@ -58,4 +58,34 @@ class WalletService
             ];
         }
     }
+
+     public function checkBalance(string $document, string $phone): array
+    {
+        try {
+            $balance = $this->repository->getWalletBalance($document, $phone);
+
+            if ($balance === null) {
+                return [
+                    'success' => false,
+                    'code' => 404,
+                    'message' => 'Cliente o billetera no encontrada',
+                    'data' => null
+                ];
+            }
+
+            return [
+                'success' => true,
+                'code' => 200,
+                'message' => 'Saldo obtenido correctamente',
+                'data' => ['balance' => $balance]
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'code' => 500,
+                'message' => 'Error al consultar saldo: ' . $e->getMessage(),
+                'data' => null
+            ];
+        }
+    }
 }

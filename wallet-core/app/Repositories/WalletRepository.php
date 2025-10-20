@@ -21,4 +21,13 @@ class WalletRepository
     {
         return $wallet->save();
     }
+
+    public function getWalletBalance(string $document, string $phone): ?float
+    {
+        $client = Client::where('document', $document)
+                    ->where('phone', $phone)
+                    ->first();
+
+        return $client && $client->wallet ? $client->wallet->balance : null;
+    }
 }
